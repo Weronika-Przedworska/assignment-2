@@ -210,6 +210,33 @@ def create_map_from_excel(excel_file, output_file='map.html',
     print("Adding heatmap...")
     add_heatmap(m, df_heatmap)
 
+    line_coordinates = [
+   [37.7749, -122.4194],  # Starting point
+   [37.7849, -122.4094],  # Middle point
+   [37.7949, -122.4294]   # End point
+]
+    east_west_line = [[40.7128, -74.006], [41.8781, -87.6298], [34.0522, -118.2437]]
+    mid_south_line=[[41.8781, -87.6298], [35.4676, -97.5164], [29.7604, -95.3698]]
+    
+    
+
+    folium.PolyLine(
+    locations=east_west_line,
+    color="blue",
+    weight=3,
+    opacity=0.7,
+    popup="Sample Line"
+    ).add_to(m)
+
+    folium.PolyLine(
+    locations=mid_south_line,
+    color="red",
+    weight=4,
+    opacity=0.8,
+    popup="Sample Line"
+    ).add_to(m)
+    
+
     # Add layer control
     folium.LayerControl().add_to(m)
 
