@@ -76,7 +76,15 @@ def add_markers(map_obj, df_markers, use_cluster=True):
 
 
 def add_lines(map_obj, df_lines):
-    pass
+    for _, row in df_lines.iterrows():
+            coordinates = parse_coordinate_string(row.get('coordinates'))
+            folium.PolyLine(
+            locations=coordinates,
+            color=row.get('color'),
+            weight=row.get('weight'),
+            opacity=row.get('fill_opacity'),
+            popup=row.get('name')
+            ).add_to(map_obj)
 
 
 def add_polygons(map_obj, df_polygons):
@@ -167,6 +175,7 @@ def create_map_from_excel(excel_file, output_file='map.html',
     df_polygons = excel_data.get('polygons')
     df_heatmap = excel_data.get('heatmap')
     df_circles = excel_data.get('circles')
+    df_lines=excel_data.get('lines')
 
     # Calculate map center if not provided
     if center_lat is None or center_lon is None:
@@ -210,31 +219,25 @@ def create_map_from_excel(excel_file, output_file='map.html',
     print("Adding heatmap...")
     add_heatmap(m, df_heatmap)
 
+    print("Adding lines...")
+    add_lines(m, df_lines)
+
+    #Bonus feature: line from my house to CMU
+
     line_coordinates = [
-   [37.7749, -122.4194],  # Starting point
-   [37.7849, -122.4094],  # Middle point
-   [37.7949, -122.4294]   # End point
-]
-    east_west_line = [[40.7128, -74.006], [41.8781, -87.6298], [34.0522, -118.2437]]
-    mid_south_line=[[41.8781, -87.6298], [35.4676, -97.5164], [29.7604, -95.3698]]
-    
-    
-
+    [40.8825, -74.1088],  # Starting point
+    [40.443336, -79.944023],   # End point
+    ]
     folium.PolyLine(
-    locations=east_west_line,
-    color="blue",
-    weight=3,
-    opacity=0.7,
-    popup="Sample Line"
+    locations=line_coordinates,
+    color="green",
+    weight=6,
+    opacity=1,
+    popup="Weronika's house to CMU"
     ).add_to(m)
 
-    folium.PolyLine(
-    locations=mid_south_line,
-    color="red",
-    weight=4,
-    opacity=0.8,
-    popup="Sample Line"
-    ).add_to(m)
+        
+
     
 
     # Add layer control
