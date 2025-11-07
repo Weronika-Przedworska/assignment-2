@@ -231,7 +231,7 @@ def create_map_from_excel(excel_file, output_file='map.html',
     folium.PolyLine(
     locations=line_coordinates,
     color="green",
-    weight=6,
+    weight=10,
     opacity=1,
     popup="Weronika's house to CMU"
     ).add_to(m)
